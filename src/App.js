@@ -1,14 +1,14 @@
-import React, { useEffect , useState} from "react";
+import React, { useEffect, useState } from "react";
 import './App.css';
 import { ethers } from "ethers";
 import abi from "./utils/Waveportal.json"
 
 function App() {
-  
+
   const contractAddress = "0x5C09796C76C82a4156D5933EfbcA5BB3115332F0";
   const [currentAccount, setCurrentAccount] = useState("");
   const contractABI = abi.abi;
-  
+
   const checkIfWalletIsConnected = async () => {
     try {
       const { ethereum } = window;
@@ -49,13 +49,13 @@ function App() {
       const accounts = await ethereum.request({ method: "eth_requestAccounts" });
 
       console.log("Connected", accounts[0]);
-      setCurrentAccount(accounts[0]); 
+      setCurrentAccount(accounts[0]);
     } catch (error) {
       console.log(error)
     }
   }
 
- const wave = async () => {
+  const getwavePortalContractObj = async () => {
     try {
       const { ethereum } = window;
 
@@ -64,55 +64,93 @@ function App() {
         const signer = provider.getSigner();
         const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer);
 
-        let count = await wavePortalContract.getTotalWaves();
-        console.log("Retrieved total wave count...", count.toNumber());
+        return wavePortalContract;
+      }
 
-        /*
-        * Execute the actual wave from your smart contract
-        */
-        const waveTxn = await wavePortalContract.wave();
-        console.log("Mining...", waveTxn.hash);
-
-        await waveTxn.wait();
-        console.log("Mined -- ", waveTxn.hash);
-
-        count = await wavePortalContract.getTotalWaves();
-        console.log("Retrieved total wave count...", count.toNumber());
-
-        let yourWaves = await wavePortalContract.getWavesBySender();
-        console.log("You have sent me %d waves" , yourWaves.toNumber());
-      } else {
+      else {
         console.log("Ethereum object doesn't exist!");
       }
-    } catch (error) {
+
+    }
+    catch (error) {
       console.log(error)
     }
+
   }
 
-  useEffect(() => {
-    checkIfWalletIsConnected();
-  }, [])
+  const [wavePortalContract , setwavePortalContract] = useState({});
+  const [loaded , setLoaded] = useState(false);
+  const [totalWaves , setTotalwaves] = useState(0);
+  const [senderWaves , setSenderWaves] = useState(0);
+
   
-  return (
-    <div className="App">
-      <header className="App-header">
+  const wave = async () => {
+    const waveTxn = await wavePortalContract.wave();
+    console.log("Mining...", waveTxn.hash);
+    await waveTxn.wait();
+    console.log("Mined -- ", waveTxn.hash);
+    alert("Succesfully sent a wave");
+    getTotalWaves();
+    getSenderWaves();
+
+  }
+
+  const getTotalWaves = async () => {
+    let count = await wavePortalContract.getTotalWaves();
+    console.log("Retrieved total wave count...", count.toNumber());
+    setTotalwaves(count.toNumber())
+  }
+
+  const getSenderWaves = async () => {
+    let yourWaves = await wavePortalContract.getWavesBySender();
+    setSenderWaves(yourWaves.toNumber())
+    console.log(`Out of {getTotalWaves()} waves , You have sent me ${yourWaves.toNumber()} waves`);
+    alert(`Out of ${totalWaves} waves , You have sent me ${senderWaves} waves`);
+  }
+
+
+ useEffect (() => {
+  
+     checkIfWalletIsConnected();
+     getwavePortalContractObj().then((result)=> { setwavePortalContract(result)});
+     getTotalWaves();
+     getSenderWaves();
+     setLoaded(true);
+
+  }, []);
+
+return (
+  <div>
+  {loaded && (
+  <div className="App">
+    <header className="App-header">
       👋 Hey there!
-      </header>
-      <div className="tagLine">
-         I am Deepu and I love to build stuff | Muley | 📚Masters Student @University of Freiburg 
-      </div>
-      <div className="waveButton">
-         <button onClick={wave}>Wave at me </button>
-      </div>
-      {!currentAccount && (
-        <div className="waveButton">
-          <button  onClick={connectWallet}>
-            Connect Wallet
-          </button>
-          </div>
-        )}
+    </header>
+    <div className="tagLine">
+      I am Deepu and I love to build stuff | Muley | 📚Masters Student @University of Freiburg
     </div>
-  );
+    <div className="waveButton">
+      <button onClick={wave}>Wave at me </button>
+    </div>
+    {!currentAccount && (
+      <div className="waveButton">
+        <button onClick={connectWallet}>
+          Connect Wallet
+        </button>
+      </div>
+    )}
+      <div>
+        {`Totally I got ${totalWaves} waves`}
+      </div>
+
+      <div>
+        {`You have sent me  ${senderWaves} waves`}
+      </div>
+  </div>
+  )}
+ </div>
+);
 }
+
 
 export default App;
