@@ -132,7 +132,9 @@ function App() {
     }
   }
 
-  useEffect(checkIfWalletIsConnected, [])
+  useEffect(() => {
+    checkIfWalletIsConnected();
+  }, []);
    
   return (
     <div className="App">
