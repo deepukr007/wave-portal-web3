@@ -124,6 +124,19 @@ function App() {
          * Store our data in React State
          */
         setAllWaves(wavesCleaned);
+
+        
+        wavePortalContract.on("NewWave", (from, timestamp, message) => {
+          console.log("NewWave", from, timestamp, message);
+
+          setAllWaves(prevState => [...prevState, {
+            address: from,
+            timestamp: new Date(timestamp * 1000),
+            message: message
+          }]);
+        });
+
+        
       } else {
         console.log("Ethereum object doesn't exist!")
       }
