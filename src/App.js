@@ -174,6 +174,8 @@ function App() {
           </button>
           </div>
         )}
+        <div class="list-container">
+          <h4>***___ Waves ___***</h4>
           {allWaves.map((wave, index) => {
           return (
             <div key={index} className="listDiv">
@@ -182,6 +184,7 @@ function App() {
               <div>Message: {wave.message}</div>
             </div>)
         })}
+        </div>
     </div>
   );
 }

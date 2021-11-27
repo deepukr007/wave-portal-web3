@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Outfit:wght@200;400&display=swap');
 *
 {
-  font-family:'Indie Flower', cursive;
+  font-family:'Outfit', sans-serif;
 
 }
 .App{
@@ -40,14 +40,16 @@
 {
   display: flex;
   margin-bottom: 10px;
-  width:min(70vw);
+  width:100%;
   justify-content: center;
 }
 
 button{
     border : none;
-    border-radius: 20px;
-    padding:10px 7vw;
+    width:80%;
+    border-radius: 5px;
+    padding:10px 0px;
+    margin:20px;
     align-items: center;
     font-size: 1.7vw;
     font-weight: 400;
@@ -58,30 +60,50 @@ button{
   display: flex;
   margin:10px;
   width: max(90vw);
-  margin-bottom:10px;
   justify-content: center;
 
 }
 
 .input{
-
-  font-size: 3vw;
+  width:100%;
+  font-size: 4vw;
   padding:20px;
   border-radius: 0px 30px;
+  background-color: rgba(256,256,256,0.9);
 
 
 }
 
-.listDiv
+
+.list-container
 {
+  margin:30px;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+}
+
+
+
+.listDiv
+{
+  
   border-radius: 10px;
-  width:70%;
+  width:100%;
   font-size : 2vw;
   background-color: rgba(256,256,256,0.9);
-  margin-top:40px;
-  padding:10px;
+  color:rgb(0,0,0);
+  margin:10px;
+  padding:20px;
+
+}
+
+h4
+{
+  font-size: 4vw;
+  color: rgba(256,256,256,0.87);
+  padding:0px;
+  margin:10px;
 
 }
