@@ -29,8 +29,10 @@ function App() {
         console.log("Found an authorized account:", account);
         setCurrentAccount(account);
         getAllWaves()
+
       } else {
         console.log("No authorized account found")
+
       }
     } catch (error) {
       console.log(error);
@@ -54,6 +56,8 @@ function App() {
 
       console.log("Connected", accounts[0]);
       setCurrentAccount(accounts[0]); 
+      getAllWaves()
+
     } catch (error) {
       console.log(error)
     }
@@ -161,7 +165,7 @@ function App() {
         <textarea className="input" type="text" id="message"></textarea>
       </div>
       <div className="waveButton">
-         <button onClick={()=>{wave(document.getElementById("message").value)}}>Wave at me </button>
+         <button onClick={()=>{wave(document.getElementById("message").value)}}>WAVE AT ME </button>
       </div>
       {!currentAccount && (
         <div className="waveButton">
